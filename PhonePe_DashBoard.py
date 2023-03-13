@@ -275,26 +275,26 @@ with tab2:
     l=len(districts)
     fig = px.bar(districts, x='Place_Name', y='Total_Transactions_count',color="Total_Transactions_count",
                  color_continuous_scale="Viridis")
-    colT1,colT2 = st.columns([7,3])
-    with colT1:
-        st.write('#### '+state.upper()+' WITH '+str(l)+' DISTRICTS')
-        st.plotly_chart(fig,use_container_width=True)
-    with colT2:
-        st.info(
-        """
-        Details of BarGraph:
-        - This entire data belongs to state selected by you
-        - X Axis represents the districts of selected state
-        - Y Axis represents total transactions        
-        """
-        )
-        st.info(
-        """
-        Important Observations:
-        - User can observe how transactions are happening in districts of a selected state 
-        - We can observe the leading distric in a state 
-        """
-        )
+    # colT1,colT2 = st.columns([7,3])
+    # with colT1:
+    st.write('#### '+state.upper()+' WITH '+str(l)+' DISTRICTS')
+    st.plotly_chart(fig,use_container_width=True)
+    # with colT2:
+    #     st.info(
+    #     """
+    #     Details of BarGraph:
+    #     - This entire data belongs to state selected by you
+    #     - X Axis represents the districts of selected state
+    #     - Y Axis represents total transactions
+    #     """
+    #     )
+    #     st.info(
+    #     """
+    #     Important Observations:
+    #     - User can observe how transactions are happening in districts of a selected state
+    #     - We can observe the leading distric in a state
+    #     """
+    #     )
 #=============================================T FIGURE3 YEAR ANALYSIS===================================================
 with tab3:
     #st.write('### :green[PaymentMode and Year]')
@@ -321,27 +321,27 @@ with tab3:
     Year_PaymentMode_Table = Year_PaymentMode_Table.sort_values(by=['Total_Transactions_count'])
     fig2= px.bar(Year_PaymentMode_Table, x='states', y='Total_Transactions_count',color="Total_Transactions_count",
                 color_continuous_scale="Viridis",)
-    colT1,colT2 = st.columns([7,3])
-    with colT1:
-        st.write('#### '+str(Year)+' DATA ANALYSIS')
-        st.plotly_chart(fig2,use_container_width=True)
-    with colT2:
-        st.info(
-        """
-        Details of BarGraph:
-        - This entire data belongs to selected Year
-        - X Axis is all the states in increasing order of Total transactions
-        - Y Axis represents total transactions in selected mode        
-        """
-        )
-        st.info(
-        """
-        Important Observations:
-        - We can observe the leading state with highest transactions in particular mode
-        - We get basic idea about regional performance of Phonepe
-        - Depending on the regional performance Phonepe can provide offers to particular place
-        """
-        )
+    # colT1,colT2 = st.columns([7,3])
+    # with colT1:
+    st.write('#### '+str(Year)+' DATA ANALYSIS')
+    st.plotly_chart(fig2,use_container_width=True)
+    # with colT2:
+    #     st.info(
+    #     """
+    #     Details of BarGraph:
+    #     - This entire data belongs to selected Year
+    #     - X Axis is all the states in increasing order of Total transactions
+    #     - Y Axis represents total transactions in selected mode
+    #     """
+    #     )
+    #     st.info(
+    #     """
+    #     Important Observations:
+    #     - We can observe the leading state with highest transactions in particular mode
+    #     - We get basic idea about regional performance of Phonepe
+    #     - Depending on the regional performance Phonepe can provide offers to particular place
+    #     """
+    #     )
 #=============================================T FIGURE4 OVERALL ANALYSIS=============================================
 with tab4:
     years=Data_Aggregated_Transaction.groupby('Year')
