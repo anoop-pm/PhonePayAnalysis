@@ -279,22 +279,7 @@ with tab2:
     # with colT1:
     st.write('#### '+state.upper()+' WITH '+str(l)+' DISTRICTS')
     st.plotly_chart(fig,use_container_width=True)
-    # with colT2:
-    #     st.info(
-    #     """
-    #     Details of BarGraph:
-    #     - This entire data belongs to state selected by you
-    #     - X Axis represents the districts of selected state
-    #     - Y Axis represents total transactions
-    #     """
-    #     )
-    #     st.info(
-    #     """
-    #     Important Observations:
-    #     - User can observe how transactions are happening in districts of a selected state
-    #     - We can observe the leading distric in a state
-    #     """
-    #     )
+
 #=============================================T FIGURE3 YEAR ANALYSIS===================================================
 with tab3:
     #st.write('### :green[PaymentMode and Year]')
@@ -325,23 +310,7 @@ with tab3:
     # with colT1:
     st.write('#### '+str(Year)+' DATA ANALYSIS')
     st.plotly_chart(fig2,use_container_width=True)
-    # with colT2:
-    #     st.info(
-    #     """
-    #     Details of BarGraph:
-    #     - This entire data belongs to selected Year
-    #     - X Axis is all the states in increasing order of Total transactions
-    #     - Y Axis represents total transactions in selected mode
-    #     """
-    #     )
-    #     st.info(
-    #     """
-    #     Important Observations:
-    #     - We can observe the leading state with highest transactions in particular mode
-    #     - We get basic idea about regional performance of Phonepe
-    #     - Depending on the regional performance Phonepe can provide offers to particular place
-    #     """
-    #     )
+
 #=============================================T FIGURE4 OVERALL ANALYSIS=============================================
 with tab4:
     years=Data_Aggregated_Transaction.groupby('Year')
@@ -358,14 +327,7 @@ with tab4:
     with col2:
         st.write('#### :green[Year Wise Transaction Analysis in INDIA]')
         st.markdown(years_Table.style.hide(axis="index").to_html(), unsafe_allow_html=True)
-        st.info(
-        """
-        Important Observations:
-        - Its very clearly understood that online transactions drasticall increased
-        - Initially in 2018,2019 the transactions are less but with time the online payments are increased at a high scale via PhonePe.
-        - We can clearly see that more than 50% of total Phonepe transactions in india happened are from the year 2022
-        """
-        )
+
 
 # @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ USER ANALYSIS @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 
@@ -407,23 +369,7 @@ with tab1:
     # with colT1:
     st.write("#### ",state.upper())
     st.plotly_chart(fig, use_container_width=True, height=200)
-    # with colT2:
-    #     st.info(
-    #     """
-    #     Details of BarGraph:
-    #     - user need to select a state
-    #     - The X Axis shows both Registered users and App openings
-    #     - The Y Axis shows the Percentage of Registered users and App openings
-    #     """
-    #     )
-    #     st.info(
-    #     """
-    #     Important Observations:
-    #     - User can observe how the App Openings are growing and how Registered users are growing in a state
-    #     - We can clearly obseve these two parameters with time
-    #     - one can observe how user base is growing
-    #     """
-    #     )
+
 # ==================================================U DISTRICT ANALYSIS ====================================================
 with tab2:
     col1, col2, col3= st.columns(3)
@@ -538,13 +484,6 @@ with tab3:
             # st.plotly_chart(fig1)
             st.plotly_chart(fig)
         with col2:  
-            # st.write('#### :green[Year Wise Transaction Analysis in INDIA]')      
+            st.write('#### :White[Year Wise Transaction Analysis in INDIA]')
             st.markdown(years_Table.style.hide(axis="index").to_html(), unsafe_allow_html=True)
-            # st.info(
-            # """
-            # Important Observation:
-            # -  We can see that the Registered Users and App openings are increasing year by year
-            #
-            # """
-            # )
 
