@@ -3,7 +3,9 @@
 This Application Using for visualize PhonePay pulse data into GEO and BAR diagrams
 for analysis user usage from 2018 to 2022
 
+![Capturenewws](https://user-images.githubusercontent.com/62478714/225609573-91d8e10c-91b4-4e4c-887f-3a33936294e2.PNG)
 
+![newCAptures](https://user-images.githubusercontent.com/62478714/225609610-a88fee6b-a082-472d-86ac-35425f4b6a3a.PNG)
 
 ## Build with
 
