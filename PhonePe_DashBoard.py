@@ -37,6 +37,8 @@ Scatter_Geo_Dataset =  pd.read_csv(r'data/Data_Map_Districts_Longitude_Latitude.
 Coropleth_Dataset =  pd.read_csv(r'data/Data_Map_IndiaStates_TU.csv')
 Data_Map_Transaction_df = pd.read_csv(r'data/Data_Map_Transaction_Table.csv')
 Data_Map_User_Table= pd.read_csv(r'data/Data_Map_User_Table.csv')
+Data_Top_User_Table= pd.read_csv(r'data/Data_TOP_User_Table.csv')
+Data_Top_Transaction_Table= pd.read_csv(r'data/Data_TOP_Transaction_Table.csv')
 
 
 
@@ -86,6 +88,7 @@ with col3:
 with col4:
     st.markdown("#### :WHITE[Total Amount :dollar:]")
     st.write(y['Total_Amount'][1:4])
+
 
 
 
@@ -191,18 +194,13 @@ st.plotly_chart(fig, use_container_width=True)
 
 # --------------------------------------------SCATTER INDIA ANALYSIS----------------------------------------------------------------
 
-# Indian_States = Indian_States.sort_values(by=['state'], ascending=False)
-# Indian_States['Registered_Users']=Coropleth_Dataset['Registered_Users']
-# Indian_States['Total_Amount']=Coropleth_Dataset['Total_Amount']
-# Indian_States['Total_Transactions']=Coropleth_Dataset['Total_Transactions']
-# Indian_States['Year_Quarter']=str(year)+'-Q'+str(quarter)
+year=int(Year)
+quarter=int(Quarter)
 
-st.write('# :White[INDIAN STATE YEAR ANALYSIS ]')
-fig64 = px.scatter(Indian_States, x="Registered_Users", y="Year_Quarter",
-                 size="Registered_Users", color="Total_Amount", hover_name="state",
-                 log_x=True, size_max=80)
+Coropleth_Dataset = Data_Top_User_Table.sort_values(by=['Registered_Users_Count'])
+fig = px.bar(Coropleth_Dataset, x='State', y='Registered_Users_Count', hover_data=['State', 'District'],color="State",height=800,title=str(year)+" Quarter-"+str(quarter))
 
-st.plotly_chart(fig64,use_container_width=True)
+st.plotly_chart(fig, use_container_width=True)
 
 
 
@@ -486,4 +484,16 @@ with tab3:
         with col2:  
             st.write('#### :White[Year Wise Transaction Analysis in INDIA]')
             st.markdown(years_Table.style.hide(axis="index").to_html(), unsafe_allow_html=True)
+
+
+st.write('#### :White[Summary Transaction Analysis in INDIA]')
+fig = px.scatter(Data_Top_Transaction_Table, x="State", y="Transaction_count", color="District",
+                 size='Total_Amount',title=str(year)+" Quarter-"+str(quarter))
+st.plotly_chart(fig, use_container_width=True)
+
+
+st.write('#### :White[Summary User Analysis in INDIA]')
+fig = px.scatter(Data_Top_User_Table, x="State", y="Registered_Users_Count", color="District",
+                 size='Registered_Users_Count',title=str(year)+" Quarter-"+str(quarter))
+st.plotly_chart(fig, use_container_width=True)
 
