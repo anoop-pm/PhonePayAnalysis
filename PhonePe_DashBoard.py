@@ -13,7 +13,7 @@ username='root'
 password='root'
 
 
-# CONNECTED TO (AWS)Amazon-Web-Services ----> (RDS)Relational-Database-Service 
+
 conn=pymysql.connect(
     host='localhost',
     user=username,
@@ -90,6 +90,28 @@ with col4:
     st.write(y['Total_Amount'][1:4])
 
 
+
+
+
+
+st.write('#### :White[Summary Transaction Analysis in INDIA]')
+
+
+df_filteredtop = Data_Top_Transaction_Table[(Data_Top_User_Table['Year'] == int(Year))]
+df_filteredtop2 = df_filteredtop[(df_filteredtop['Quater'] == int(Quarter))]
+
+
+fig = px.scatter(df_filteredtop2, x="State", y="Transaction_count", color="District",
+                 size='Total_Amount',title=str(Year)+" Quarter-"+str(Quarter))
+st.plotly_chart(fig, use_container_width=True)
+
+df_filtered = Data_Top_User_Table[(Data_Top_User_Table['Year'] == int(Year))]
+df_filtered2 = df_filtered[(df_filtered['Quater'] == int(Quarter))]
+
+st.write('#### :White[Summary User Analysis in INDIA]')
+fig = px.scatter(df_filtered2, x="State", y="Registered_Users_Count", color="District",
+                 size='Registered_Users_Count',title=str(Year)+" Quarter-"+str(Quarter))
+st.plotly_chart(fig, use_container_width=True)
 
 
 
@@ -486,14 +508,4 @@ with tab3:
             st.markdown(years_Table.style.hide(axis="index").to_html(), unsafe_allow_html=True)
 
 
-st.write('#### :White[Summary Transaction Analysis in INDIA]')
-fig = px.scatter(Data_Top_Transaction_Table, x="State", y="Transaction_count", color="District",
-                 size='Total_Amount',title=str(year)+" Quarter-"+str(quarter))
-st.plotly_chart(fig, use_container_width=True)
-
-
-st.write('#### :White[Summary User Analysis in INDIA]')
-fig = px.scatter(Data_Top_User_Table, x="State", y="Registered_Users_Count", color="District",
-                 size='Registered_Users_Count',title=str(year)+" Quarter-"+str(quarter))
-st.plotly_chart(fig, use_container_width=True)
 
