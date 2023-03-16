@@ -54,67 +54,6 @@ with colT2:
 
 
 
-st.write('# TOP 3 STATES DATA')
-c1,c2=st.columns(2)
-with c1:
-    Year = st.selectbox(
-            'Please select the Year',
-            ('2022', '2021','2020','2019','2018'),key='y1h2k')
-with c2:
-    Quarter = st.selectbox(
-            'Please select the Quarter',
-            ('1', '2', '3','4'),key='qgwe2')
-Data_Map_User_df=Data_Aggregated_User_Summary_df.copy()
-top_states=Data_Map_User_df.loc[(Data_Map_User_df['Year'] == int(Year)) & (Data_Map_User_df['Quarter'] ==int(Quarter))]
-top_states_r = top_states.sort_values(by=['Registered_Users'], ascending=False)
-top_states_a = top_states.sort_values(by=['AppOpenings'], ascending=False)
-
-top_states_T=Data_Aggregated_Transaction_df.loc[(Data_Aggregated_Transaction_df['Year'] == int(Year)) & (Data_Aggregated_Transaction_df['Quarter'] ==int(Quarter))]
-topst=top_states_T.groupby('State')
-x=topst.sum().sort_values(by=['Total_Transactions_count'], ascending=False)
-y=topst.sum().sort_values(by=['Total_Amount'], ascending=False)
-col1, col2, col3, col4= st.columns([2.5,2.5,2.5,2.5])
-with col1:
-    rt=top_states_r[1:4]
-    st.markdown("#### :WHITE[Registered Users :bust_in_silhouette:]")
-    st.markdown(rt[[ 'State','Registered_Users']].style.hide(axis="index").to_html(), unsafe_allow_html=True)
-with col2:
-    at=top_states_a[1:4]
-    st.markdown("#### :WHITE[PhonePeApp Openings:iphone:]")
-    st.markdown(at[['State','AppOpenings']].style.hide(axis="index").to_html(), unsafe_allow_html=True)
-with col3:
-    st.markdown("#### :WHITE[Total Transactions:currency_exchange:]")
-    st.write(x[['Total_Transactions_count']][1:4])
-with col4:
-    st.markdown("#### :WHITE[Total Amount :dollar:]")
-    st.write(y['Total_Amount'][1:4])
-
-
-
-
-
-
-st.write('#### :White[Summary Transaction Analysis in INDIA]')
-
-
-df_filteredtop = Data_Top_Transaction_Table[(Data_Top_User_Table['Year'] == int(Year))]
-df_filteredtop2 = df_filteredtop[(df_filteredtop['Quater'] == int(Quarter))]
-
-
-fig = px.scatter(df_filteredtop2, x="State", y="Transaction_count", color="District",
-                 size='Total_Amount',title=str(Year)+" Quarter-"+str(Quarter))
-st.plotly_chart(fig, use_container_width=True)
-
-df_filtered = Data_Top_User_Table[(Data_Top_User_Table['Year'] == int(Year))]
-df_filtered2 = df_filtered[(df_filtered['Quater'] == int(Quarter))]
-
-st.write('#### :White[Summary User Analysis in INDIA]')
-fig = px.scatter(df_filtered2, x="State", y="Registered_Users_Count", color="District",
-                 size='Registered_Users_Count',title=str(Year)+" Quarter-"+str(Quarter))
-st.plotly_chart(fig, use_container_width=True)
-
-
-
 
 # INDIA MAP ANALYSIS BY State
 st.write("### **:PURPLE[PhonePe Pulse India GEO]**")
@@ -216,10 +155,12 @@ st.plotly_chart(fig, use_container_width=True)
 
 # --------------------------------------------SCATTER INDIA ANALYSIS----------------------------------------------------------------
 
+st.write("### **:WHITE[PhonePe Pulse Total Usage data]**")
 year=int(Year)
 quarter=int(Quarter)
-
-Coropleth_Dataset = Data_Top_User_Table.sort_values(by=['Registered_Users_Count'])
+df_filtered = Data_Top_User_Table[(Data_Top_User_Table['Year'] == int(Year))]
+df_filtered2 = df_filtered[(df_filtered['Quater'] == int(Quarter))]
+Coropleth_Dataset = df_filtered2.sort_values(by=['Registered_Users_Count'])
 fig = px.bar(Coropleth_Dataset, x='State', y='Registered_Users_Count', hover_data=['State', 'District'],color="State",height=800,title=str(year)+" Quarter-"+str(quarter))
 
 st.plotly_chart(fig, use_container_width=True)
@@ -470,8 +411,7 @@ with tab3:
                 color_continuous_scale="purples",)
     # with st.expander("See Bar graph for the same data"):
     st.plotly_chart(fig4,use_container_width=True)
-# ===================================================U OVERALL ANALYSIS ====================================================
-
+# ===================================================User OVERALL ANALYSIS ====================================================
     with tab4:
         years=Data_Aggregated_User_Summary_df.groupby('Year')
         years_List=Data_Aggregated_User_Summary_df['Year'].unique()
@@ -509,3 +449,59 @@ with tab3:
 
 
 
+st.write('# TOP 3 STATES DATA')
+c1,c2=st.columns(2)
+with c1:
+    Year = st.selectbox(
+            'Please select the Year',
+            ('2022', '2021','2020','2019','2018'),key='y1h2k')
+with c2:
+    Quarter = st.selectbox(
+            'Please select the Quarter',
+            ('1', '2', '3','4'),key='qgwe2')
+Data_Map_User_df=Data_Aggregated_User_Summary_df.copy()
+top_states=Data_Map_User_df.loc[(Data_Map_User_df['Year'] == int(Year)) & (Data_Map_User_df['Quarter'] ==int(Quarter))]
+top_states_r = top_states.sort_values(by=['Registered_Users'], ascending=False)
+top_states_a = top_states.sort_values(by=['AppOpenings'], ascending=False)
+
+top_states_T=Data_Aggregated_Transaction_df.loc[(Data_Aggregated_Transaction_df['Year'] == int(Year)) & (Data_Aggregated_Transaction_df['Quarter'] ==int(Quarter))]
+topst=top_states_T.groupby('State')
+x=topst.sum().sort_values(by=['Total_Transactions_count'], ascending=False)
+y=topst.sum().sort_values(by=['Total_Amount'], ascending=False)
+col1, col2, col3, col4= st.columns([2.5,2.5,2.5,2.5])
+with col1:
+    rt=top_states_r[1:4]
+    st.markdown("#### :WHITE[Registered Users :bust_in_silhouette:]")
+    st.markdown(rt[[ 'State','Registered_Users']].style.hide(axis="index").to_html(), unsafe_allow_html=True)
+with col2:
+    at=top_states_a[1:4]
+    st.markdown("#### :WHITE[PhonePeApp Openings:iphone:]")
+    st.markdown(at[['State','AppOpenings']].style.hide(axis="index").to_html(), unsafe_allow_html=True)
+with col3:
+    st.markdown("#### :WHITE[Total Transactions:currency_exchange:]")
+    st.write(x[['Total_Transactions_count']][1:4])
+with col4:
+    st.markdown("#### :WHITE[Total Amount :dollar:]")
+    st.write(y['Total_Amount'][1:4])
+
+
+st.markdown("")
+st.write('#### :White[Summary Transaction Analysis in INDIA]')
+
+
+df_filteredtop = Data_Top_Transaction_Table[(Data_Top_User_Table['Year'] == int(Year))]
+df_filteredtop2 = df_filteredtop[(df_filteredtop['Quater'] == int(Quarter))]
+
+
+fig = px.scatter(df_filteredtop2, x="State", y="Transaction_count", color="District",
+                 size='Total_Amount',title=str(Year)+" Quarter-"+str(Quarter))
+fig.update_layout(height=600)
+st.plotly_chart(fig, use_container_width=True,height=800)
+df_filtered = Data_Top_User_Table[(Data_Top_User_Table['Year'] == int(Year))]
+df_filtered2 = df_filtered[(df_filtered['Quater'] == int(Quarter))]
+
+st.write('#### :White[Summary User Analysis in INDIA]')
+fig = px.scatter(df_filtered2, x="State", y="Registered_Users_Count", color="District",
+                 size='Registered_Users_Count',title=str(Year)+" Quarter-"+str(Quarter))
+fig.update_layout(height=600)
+st.plotly_chart(fig, use_container_width=True,height=800)
