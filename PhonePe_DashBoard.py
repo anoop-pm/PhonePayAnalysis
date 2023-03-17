@@ -254,7 +254,7 @@ with tab3:
 
 #----------------------------------- TRANSACTIONS ANALYSIS ----------------------------------
 
-st.write('# :White[TRANSACTIONS ANALYSIS ]')
+st.write('# :White[User TRANSACTIONS ANALYSIS ]')
 tab1, tab2, tab3, tab4 = st.tabs([ "Year Top ANALYSIS".upper(),"STATE ANALYSIS".upper(), "Payment Mode Year ANALYSIS".upper(), "OVERALL ANALYSIS".upper()])
 #==================================================T FIGURE1 STATE ANALYSIS=======================================================
 
