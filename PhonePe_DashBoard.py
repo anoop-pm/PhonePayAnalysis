@@ -251,110 +251,83 @@ with tab3:
 
 
 
+
 #----------------------------------- TRANSACTIONS ANALYSIS ----------------------------------
 
 st.write('# :White[TRANSACTIONS ANALYSIS ]')
-tab1, tab2, tab3, tab4 = st.tabs(["STATE ANALYSIS", "DISTRICT ANALYSIS", "YEAR ANALYSIS", "OVERALL ANALYSIS"])
+tab1, tab2, tab3, tab4 = st.tabs([ "Year Top ANALYSIS".upper(),"STATE ANALYSIS".upper(), "Payment Mode Year ANALYSIS".upper(), "OVERALL ANALYSIS".upper()])
 #==================================================T FIGURE1 STATE ANALYSIS=======================================================
+
+#=============================================T FIGURE2 DISTRICTS ANALYSIS=============================================
 with tab1:
+    st.write('# :WHITE[Transaction OverAll ANALYSIS ]')
+
+    fig = px.bar(Data_Top_Transaction_Table, x="State", y="Total_Amount", color="State",
+                 animation_frame="Year", animation_group="District", range_y=[0, 100000000000])
+
+    st.plotly_chart(fig, use_container_width=True)
+
+
+with tab2:
     Data_Aggregated_Transaction=Data_Aggregated_Transaction_df.copy()
     Data_Aggregated_Transaction.drop(Data_Aggregated_Transaction.index[(Data_Aggregated_Transaction["State"] == "india")],axis=0,inplace=True)
     State_PaymentMode=Data_Aggregated_Transaction.copy()
     # st.write('### :green[State & PaymentMode]')
-    col1, col2= st.columns(2)
+    col1, col2 ,col3= st.columns(3)
     with col1:
         mode = st.selectbox(
             'Please select the Mode',
             ('Recharge & bill payments', 'Peer-to-peer payments', 'Merchant payments', 'Financial Services','Others'),key='a')
-    with col2:
-        state = st.selectbox(
-        'Please select the State',
-        ('andaman-&-nicobar-islands', 'andhra-pradesh', 'arunachal-pradesh',
-        'assam', 'bihar', 'chandigarh', 'chhattisgarh',
-        'dadra-&-nagar-haveli-&-daman-&-diu', 'delhi', 'goa', 'gujarat',
-        'haryana', 'himachal-pradesh', 'jammu-&-kashmir',
-        'jharkhand', 'karnataka', 'kerala', 'ladakh', 'lakshadweep',
-        'madhya-pradesh', 'maharashtra', 'manipur', 'meghalaya', 'mizoram',
-        'nagaland', 'odisha', 'puducherry', 'punjab', 'rajasthan',
-        'sikkim', 'tamil-nadu', 'telangana', 'tripura', 'uttar-pradesh',
-        'uttarakhand', 'west-bengal'),key='b')
-    State= state
-    Year_List=[2018,2019,2020,2021,2022]
-    Mode=mode
-    State_PaymentMode=State_PaymentMode.loc[(State_PaymentMode['State'] == State ) & (State_PaymentMode['Year'].isin(Year_List)) &
-                            (State_PaymentMode['Payment_Mode']==Mode )]
-    State_PaymentMode = State_PaymentMode.sort_values(by=['Year'])
-    State_PaymentMode["Quarter"] = "Q"+State_PaymentMode['Quarter'].astype(str)
-    State_PaymentMode["Year_Quarter"] = State_PaymentMode['Year'].astype(str) +"-"+ State_PaymentMode["Quarter"].astype(str)
-    fig = px.bar(State_PaymentMode, x='Year_Quarter', y='Total_Transactions_count',color="Total_Transactions_count",
-                 color_continuous_scale="Viridis")
 
-
-    st.write('#### '+State.upper())
-    st.plotly_chart(fig,use_container_width=True)
-#=============================================T FIGURE2 DISTRICTS ANALYSIS=============================================
-with tab2:
-    col1, col2, col3= st.columns(3)
-    with col1:
-        Year = st.selectbox(
-            'Please select the Year',
-            ('2018', '2019', '2020','2021','2022'),key='y1')
-    with col2:
-        state = st.selectbox(
-        'Please select the State',
-        ('andaman-&-nicobar-islands', 'andhra-pradesh', 'arunachal-pradesh',
-        'assam', 'bihar', 'chandigarh', 'chhattisgarh',
-        'dadra-&-nagar-haveli-&-daman-&-diu', 'delhi', 'goa', 'gujarat',
-        'haryana', 'himachal-pradesh', 'jammu-&-kashmir',
-        'jharkhand', 'karnataka', 'kerala', 'ladakh', 'lakshadweep',
-        'madhya-pradesh', 'maharashtra', 'manipur', 'meghalaya', 'mizoram',
-        'nagaland', 'odisha', 'puducherry', 'punjab', 'rajasthan',
-        'sikkim', 'tamil-nadu', 'telangana', 'tripura', 'uttar-pradesh',
-        'uttarakhand', 'west-bengal'),key='dk')
-    with col3:
-        Quarter = st.selectbox(
-            'Please select the Quarter',
-            ('1', '2', '3','4'),key='qwe')
-    districts=Data_Map_Transaction_df.loc[(Data_Map_Transaction_df['State'] == state ) & (Data_Map_Transaction_df['Year']==int(Year))
-                                          & (Data_Map_Transaction_df['Quarter']==int(Quarter))]
-    l=len(districts)
-    fig = px.bar(districts, x='Place_Name', y='Total_Transactions_count',color="Total_Transactions_count",
-                 color_continuous_scale="Viridis")
-    # colT1,colT2 = st.columns([7,3])
-    # with colT1:
-    st.write('#### '+state.upper()+' WITH '+str(l)+' DISTRICTS')
-    st.plotly_chart(fig,use_container_width=True)
-
-#=============================================T FIGURE3 YEAR ANALYSIS===================================================
-with tab3:
-    #st.write('### :green[PaymentMode and Year]')
-    col1, col2= st.columns(2)
-    with col1:
-        M = st.selectbox(
-            'Please select the Mode',
-            ('Recharge & bill payments', 'Peer-to-peer payments', 'Merchant payments', 'Financial Services','Others'),key='Dss')
     with col2:
         Y = st.selectbox(
         'Please select the Year',
-        ('2018', '2019', '2020','2021','2022'),key='Fss')
-    Year_PaymentMode=Data_Aggregated_Transaction.copy()
+        ('2018', '2019', '2020','2021','2022'),key='Fssssa')
+    with col3:
+        Quarter = st.selectbox(
+            'Please select the Quarter',
+            ('1', '2', '3', '4'), key='qwe2aasa')
+
+    Mode=mode
+    Year = int(Y)
+    Quarter2 = int(Quarter)
+
+    df_filtered = Data_Aggregated_Transaction[(Data_Aggregated_Transaction['Year'] == Year)]
+    df_filtered2= df_filtered[(df_filtered['Quarter'] == Quarter2)]
+    df_filtered3 = df_filtered2[(df_filtered2['Payment_Mode'] == mode)]
+
+
+    fig = px.bar(df_filtered3, x='State', y='Total_Transactions_count',color="Total_Transactions_count",
+                 color_continuous_scale="Viridis")
+
+
+    st.write('#### '+str(Year)  +"--"+ str(Quarter2))
+    st.plotly_chart(fig,use_container_width=True)
+
+
+#=============================================T FIGURE3 YEAR ANALYSIS===================================================
+with tab3:
+    st.write('### :white[PaymentMode and Year]')
+    col1, col2= st.columns(2)
+    with col1:
+        Y = st.selectbox(
+        'Please select the Year',
+        ('2018', '2019', '2020','2021','2022'),key='Fssss')
+    with col2:
+        Quarter = st.selectbox(
+            'Please select the Quarter',
+            ('1', '2', '3', '4'), key='qwe2as')
+
+
     Year=int(Y)
-    Mode=M
-    Year_PaymentMode=Year_PaymentMode.loc[(Year_PaymentMode['Year']==Year) &
-                            (Year_PaymentMode['Payment_Mode']==Mode )]
-    States_List=Year_PaymentMode['State'].unique()
-    State_groupby_YP=Year_PaymentMode.groupby('State')
-    Year_PaymentMode_Table=State_groupby_YP.sum()
-    Year_PaymentMode_Table['states']=States_List
-    del Year_PaymentMode_Table['Quarter'] # ylgnbu', 'ylorbr', 'ylorrd teal
-    del Year_PaymentMode_Table['Year']
-    Year_PaymentMode_Table = Year_PaymentMode_Table.sort_values(by=['Total_Transactions_count'])
-    fig2= px.bar(Year_PaymentMode_Table, x='states', y='Total_Transactions_count',color="Total_Transactions_count",
-                color_continuous_scale="Viridis",)
-    # colT1,colT2 = st.columns([7,3])
-    # with colT1:
-    st.write('#### '+str(Year)+' DATA ANALYSIS')
-    st.plotly_chart(fig2,use_container_width=True)
+    Quarter2=int(Quarter)
+
+    df_filtered = Data_Aggregated_Transaction[(Data_Aggregated_Transaction['Year'] == Year)]
+    df_filtered2= df_filtered[(df_filtered['Quarter'] == Quarter2)]
+
+    fig = px.pie(df_filtered2, values='Total_Transactions_count', names='Payment_Mode', title='Total_Transactions_count')
+    st.plotly_chart(fig, use_container_width=True)
+
 
 #=============================================T FIGURE4 OVERALL ANALYSIS=============================================
 with tab4:
@@ -374,54 +347,20 @@ with tab4:
         st.markdown(years_Table.style.hide(axis="index").to_html(), unsafe_allow_html=True)
 
 
-st.write('# :WHITE[Transaction OverAll ANALYSIS ]')
-
-fig= px.bar(Data_Top_Transaction_Table, x="State", y="Total_Amount", color="State",
-  animation_frame="Year", animation_group="District", range_y=[0,100000000000])
-
-
-st.plotly_chart(fig, use_container_width=True)
 
 # @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ USER ANALYSIS @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 
 st.write('# :WHITE[USERS DATA ANALYSIS ]')
-tab1, tab2, tab3, tab4 = st.tabs(["STATE ANALYSIS", "DISTRICT ANALYSIS","YEAR ANALYSIS","OVERALL ANALYSIS"])
+tab1, tab2, tab3, tab4 = st.tabs(["STATE USER TOP ANALYSIS", "DISTRICT ANALYSIS","YEAR ANALYSIS","OVERALL ANALYSIS"])
 
 # =================================================U STATE ANALYSIS ========================================================
 with tab1:
-    st.write('### :WHITE[State & Userbase]')
-    state = st.selectbox(
-        'Please select the State',
-        ('andaman-&-nicobar-islands', 'andhra-pradesh', 'arunachal-pradesh',
-        'assam', 'bihar', 'chandigarh', 'chhattisgarh',
-        'dadra-&-nagar-haveli-&-daman-&-diu', 'delhi', 'goa', 'gujarat',
-        'haryana', 'himachal-pradesh', 'jammu-&-kashmir',
-        'jharkhand', 'karnataka', 'kerala', 'ladakh', 'lakshadweep',
-        'madhya-pradesh', 'maharashtra', 'manipur', 'meghalaya', 'mizoram',
-        'nagaland', 'odisha', 'puducherry', 'punjab', 'rajasthan',
-        'sikkim', 'tamil-nadu', 'telangana', 'tripura', 'uttar-pradesh',
-        'uttarakhand', 'west-bengal'),key='Ws')
-    app_opening=Data_Aggregated_User_Summary_df.groupby(['State','Year'])
-    a_state=app_opening.sum()
-    la=Data_Aggregated_User_Summary_df['State'] +"-"+ Data_Aggregated_User_Summary_df["Year"].astype(str)
-    a_state["state_year"] = la.unique()
-    sta=a_state["state_year"].str[:-5]
-    a_state["state"] = sta
-    sout=a_state.loc[(a_state['state'] == state) ]
-    ta=sout['AppOpenings'].sum()
-    tr=sout['Registered_Users'].sum()
-    sout['AppOpenings']=sout['AppOpenings'].mul(100/ta)
-    sout['Registered_Users']=sout['Registered_Users'].mul(100/tr).copy()
-    fig = go.Figure(data=[
-        go.Bar(name='AppOpenings %', y=sout['AppOpenings'], x=sout['state_year'], marker={'color': '#006152'}),
-        go.Bar(name='Registered Users %', y=sout['Registered_Users'], x=sout['state_year'],marker={'color': '#00fbff'})
-    ])
-    # Change the bar mode
-    fig.update_layout(barmode='group')
-    # colT1,colT2 = st.columns([7,3])
-    # with colT1:
-    st.write("#### ",state.upper())
-    st.plotly_chart(fig, use_container_width=True, height=200)
+    st.write('# :WHITE[User OverAll Count  ]')
+
+    fig = px.bar(Data_Top_User_Table, x="State", y="Registered_Users_Count", color="State",
+                 animation_frame="Year", animation_group="District", range_y=[0, 5000000])
+
+    st.plotly_chart(fig, use_container_width=True)
 
 # ==================================================U DISTRICT ANALYSIS ====================================================
 with tab2:
@@ -528,15 +467,9 @@ with tab3:
             st.markdown(years_Table.style.hide(axis="index").to_html(), unsafe_allow_html=True)
 
 
-st.write('# :WHITE[User OverAll Count  ]')
-
-fig= px.bar(Data_Top_User_Table, x="State", y="Registered_Users_Count", color="State",
-  animation_frame="Year", animation_group="District", range_y=[0,5000000])
 
 
-st.plotly_chart(fig, use_container_width=True)
-
-st.write('# TOP 3 STATES DATA')
+st.write('# TOP STATES DATA')
 c1,c2=st.columns(2)
 with c1:
     Year = st.selectbox(
@@ -557,24 +490,23 @@ x=topst.sum().sort_values(by=['Total_Transactions_count'], ascending=False)
 y=topst.sum().sort_values(by=['Total_Amount'], ascending=False)
 col1, col2, col3, col4= st.columns([2.5,2.5,2.5,2.5])
 with col1:
-    rt=top_states_r[1:4]
-    st.markdown("#### :WHITE[Registered Users :bust_in_silhouette:]")
+    rt=top_states_r[1:10]
+    st.markdown("#### :WHITE[Registered Users ]")
     st.markdown(rt[[ 'State','Registered_Users']].style.hide(axis="index").to_html(), unsafe_allow_html=True)
 with col2:
-    at=top_states_a[1:4]
-    st.markdown("#### :WHITE[PhonePeApp Openings:iphone:]")
+    at=top_states_a[1:10]
+    st.markdown("#### :WHITE[PhonePeApp Openings]")
     st.markdown(at[['State','AppOpenings']].style.hide(axis="index").to_html(), unsafe_allow_html=True)
 with col3:
-    st.markdown("#### :WHITE[Total Transactions:currency_exchange:]")
-    st.write(x[['Total_Transactions_count']][1:4])
+    st.markdown("#### :WHITE[Total Transactions]")
+    st.write(x[['Total_Transactions_count']][1:10])
 with col4:
-    st.markdown("#### :WHITE[Total Amount :dollar:]")
-    st.write(y['Total_Amount'][1:4])
+    st.markdown("#### :WHITE[Total Amount ]")
+    st.write(y['Total_Amount'][1:10])
 
 
 st.markdown("")
-st.write('#### :White[Summary Transaction Analysis in INDIA]')
-
+st.write('#### :White[Summary TOP Transaction Analysis in INDIA]')
 
 df_filteredtop = Data_Top_Transaction_Table[(Data_Top_User_Table['Year'] == int(Year))]
 df_filteredtop2 = df_filteredtop[(df_filteredtop['Quater'] == int(Quarter))]
@@ -587,7 +519,7 @@ st.plotly_chart(fig, use_container_width=True,height=800)
 df_filtered = Data_Top_User_Table[(Data_Top_User_Table['Year'] == int(Year))]
 df_filtered2 = df_filtered[(df_filtered['Quater'] == int(Quarter))]
 
-st.write('#### :White[Summary User Analysis in INDIA]')
+st.write('#### :White[Summary TOP User Analysis in INDIA]')
 fig = px.scatter(df_filtered2, x="State", y="Registered_Users_Count", color="District",
                  size='Registered_Users_Count',title=str(Year)+" Quarter-"+str(Quarter))
 fig.update_layout(height=600)
