@@ -44,9 +44,6 @@ Data_Top_Transaction_Table= pd.read_csv(r'data/Data_TOP_Transaction_Table.csv')
 
 
 
-
-
-
 #Indian_States= pd.read_csv(r'data/Longitude_Latitude_State_Table.csv')
 colT1,colT2 = st.columns([2,8])
 with colT2:
@@ -153,6 +150,8 @@ fig = px.bar(Coropleth_Dataset, x='state', y='Total_Transactions',title=str(year
 st.plotly_chart(fig, use_container_width=True)
 
 
+
+
 # --------------------------------------------SCATTER INDIA ANALYSIS----------------------------------------------------------------
 
 st.write("### **:WHITE[PhonePe Pulse Total Usage data]**")
@@ -164,6 +163,91 @@ Coropleth_Dataset = df_filtered2.sort_values(by=['Registered_Users_Count'])
 fig = px.bar(Coropleth_Dataset, x='State', y='Registered_Users_Count', hover_data=['State', 'District'],color="State",height=800,title=str(year)+" Quarter-"+str(quarter))
 
 st.plotly_chart(fig, use_container_width=True)
+
+
+#----------------------------------- MOBILE PHONE ANALYSIS ----------------------------------
+
+
+st.write('# :WHITE[MobilePhone DATA ANALYSIS ]')
+tab1, tab2, tab3 = st.tabs(["STATE ANALYSIS","YEAR ANALYSIS","OVERALL ANALYSIS"])
+
+with tab1 :
+    st.write('### :WHITE[MobileBrands By State]')
+    state = st.selectbox(
+            'Please select the State',
+            ('andaman-&-nicobar-islands', 'andhra-pradesh', 'arunachal-pradesh',
+            'assam', 'bihar', 'chandigarh', 'chhattisgarh',
+            'dadra-&-nagar-haveli-&-daman-&-diu', 'delhi', 'goa', 'gujarat',
+            'haryana', 'himachal-pradesh', 'jammu-&-kashmir',
+            'jharkhand', 'karnataka', 'kerala', 'ladakh', 'lakshadweep',
+            'madhya-pradesh', 'maharashtra', 'manipur', 'meghalaya', 'mizoram',
+            'nagaland', 'odisha', 'puducherry', 'punjab', 'rajasthan',
+            'sikkim', 'tamil-nadu', 'telangana', 'tripura', 'uttar-pradesh',
+            'uttarakhand', 'west-bengal'),key='W')
+
+    c1, c2 = st.columns(2)
+    with c1:
+        Year = st.selectbox(
+            'Please select the Year',
+            ('2022', '2021', '2020', '2019', '2018'), key='y1h2kk')
+    with c2:
+        Quarter = st.selectbox(
+            'Please select the Quarter',
+            ('1', '2', '3', '4'), key='qgwe24')
+    df_filtered = Data_Aggregated_User_df[(Data_Aggregated_User_df['Year'] == int(Year))]
+    df_filtered2 = df_filtered[(df_filtered['Quarter'] == int(Quarter))]
+
+    df_filtered2s = df_filtered2[(df_filtered2['State'] == state)]
+
+    fig = px.bar(df_filtered2s, x='Brand_Name', y='Registered_Users_Count',hover_data=['State', 'Brand_Name'],color="Brand_Name", title=str(Year) + " Quarter-" + str(Quarter))
+
+    st.plotly_chart(fig, use_container_width=True)
+
+with tab2:
+    st.write('### :WHITE[MobileBrands usage year analysis]')
+    c1, c2 = st.columns(2)
+    with c1:
+        Year = st.selectbox(
+            'Please select the Year',
+            ('2022', '2021', '2020', '2019', '2018'), key='y1h2kksa')
+    with c2:
+        Quarter = st.selectbox(
+            'Please select the Quarter',
+            ('1', '2', '3', '4'), key='qgwe24sa')
+    df_filtered = Data_Aggregated_User_df[(Data_Aggregated_User_df['Year'] == int(Year))]
+    df_filtered2 = df_filtered[(df_filtered['Quarter'] == int(Quarter))]
+    fig = px.bar(df_filtered2, x='Brand_Name', y='Registered_Users_Count', hover_data=['State', 'Brand_Name'],
+                 color="Brand_Name", title=str(Year) + " Quarter-" + str(Quarter))
+    st.plotly_chart(fig, use_container_width=True)
+
+with tab3:
+    st.write('### :WHITE[Top Mobile Brands]')
+
+    c1, c2 = st.columns(2)
+    with c1:
+        Year = st.selectbox(
+            'Please select the Year',
+            ('2022', '2021', '2020', '2019', '2018'), key='y1h2kks')
+    with c2:
+        Quarter = st.selectbox(
+            'Please select the Quarter',
+            ('1', '2', '3', '4'), key='qgwe24s')
+    df_filtered = Data_Aggregated_User_df[(Data_Aggregated_User_df['Year'] == int(Year))]
+    df_filtered2 = df_filtered[(df_filtered['Quarter'] == int(Quarter))]
+    top_5_brands = df_filtered2.sort_values('Registered_Users_Count', ascending=False).head(5)[['Brand_Name', 'Registered_Users_Count']]
+
+    c1, c2 = st.columns(2)
+    with c1:
+        st.write("Top 5 Brands")
+        fig = px.pie(top_5_brands, values='Registered_Users_Count', names='Brand_Name')
+        st.plotly_chart(fig, use_container_width=True)
+    with c2:
+        st.write("Brands OverAll Analysis")
+        fig = px.pie(df_filtered2, values='Registered_Users_Count', names='Brand_Name')
+        st.plotly_chart(fig, use_container_width=True)
+    fig = go.Figure(data=[go.Table(header=dict(values=list(top_5_brands.columns)),
+                                   cells=dict(values=[top_5_brands.Brand_Name, top_5_brands.Registered_Users_Count]))])
+    st.plotly_chart(fig, use_container_width=True)
 
 
 
@@ -248,11 +332,11 @@ with tab3:
     with col1:
         M = st.selectbox(
             'Please select the Mode',
-            ('Recharge & bill payments', 'Peer-to-peer payments', 'Merchant payments', 'Financial Services','Others'),key='D')
+            ('Recharge & bill payments', 'Peer-to-peer payments', 'Merchant payments', 'Financial Services','Others'),key='Dss')
     with col2:
         Y = st.selectbox(
         'Please select the Year',
-        ('2018', '2019', '2020','2021','2022'),key='F')
+        ('2018', '2019', '2020','2021','2022'),key='Fss')
     Year_PaymentMode=Data_Aggregated_Transaction.copy()
     Year=int(Y)
     Mode=M
@@ -283,12 +367,20 @@ with tab4:
     fig1 = px.pie(years_Table, values='Total_Transactions_count', names='year',color_discrete_sequence=px.colors.sequential.Viridis, title='TOTAL TRANSACTIONS (2018 TO 2022)')
     col1, col2= st.columns([0.65,0.35])
     with col1:
-        st.write('### :green[Drastical Increase in Transactions :rocket:]')
+        # st.write('### :Wh[Drastical Increase in Transactions :rocket:]')
         st.plotly_chart(fig1)
     with col2:
-        st.write('#### :green[Year Wise Transaction Analysis in INDIA]')
+        # st.write('#### :green[Year Wise Transaction Analysis in INDIA]')
         st.markdown(years_Table.style.hide(axis="index").to_html(), unsafe_allow_html=True)
 
+
+st.write('# :WHITE[Transaction OverAll ANALYSIS ]')
+
+fig= px.bar(Data_Top_Transaction_Table, x="State", y="Total_Amount", color="State",
+  animation_frame="Year", animation_group="District", range_y=[0,100000000000])
+
+
+st.plotly_chart(fig, use_container_width=True)
 
 # @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ USER ANALYSIS @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 
@@ -308,7 +400,7 @@ with tab1:
         'madhya-pradesh', 'maharashtra', 'manipur', 'meghalaya', 'mizoram',
         'nagaland', 'odisha', 'puducherry', 'punjab', 'rajasthan',
         'sikkim', 'tamil-nadu', 'telangana', 'tripura', 'uttar-pradesh',
-        'uttarakhand', 'west-bengal'),key='W')
+        'uttarakhand', 'west-bengal'),key='Ws')
     app_opening=Data_Aggregated_User_Summary_df.groupby(['State','Year'])
     a_state=app_opening.sum()
     la=Data_Aggregated_User_Summary_df['State'] +"-"+ Data_Aggregated_User_Summary_df["Year"].astype(str)
@@ -354,6 +446,7 @@ with tab2:
         Quarter = st.selectbox(
             'Please select the Quarter',
             ('1', '2', '3','4'),key='qwe2')
+
     districts=Data_Map_User_Table.loc[(Data_Map_User_Table['State'] == state ) & (Data_Map_User_Table['Year']==int(Year))
                                           & (Data_Map_User_Table['Quarter']==int(Quarter))]
     l=len(districts)
@@ -369,12 +462,12 @@ with tab2:
 
 # ==================================================U YEAR ANALYSIS ========================================================
 with tab3:
-    st.write('### :WHITE[Brand Share] ')
+    st.write('### :WHITE[TOP User Count by State and District] ')
     col1, col2= st.columns(2)
     with col1:
         state = st.selectbox(
         'Please select the State',
-        ('india','andaman-&-nicobar-islands', 'andhra-pradesh', 'arunachal-pradesh',
+        ('andaman-&-nicobar-islands', 'andhra-pradesh', 'arunachal-pradesh',
         'assam', 'bihar', 'chandigarh', 'chhattisgarh',
         'dadra-&-nagar-haveli-&-daman-&-diu', 'delhi', 'goa', 'gujarat',
         'haryana', 'himachal-pradesh', 'jammu-&-kashmir',
@@ -389,28 +482,15 @@ with tab3:
         ('2018', '2019', '2020','2021','2022'),key='X')
     y=int(Y)
     s=state
-    brand=Data_Aggregated_User_df[Data_Aggregated_User_df['Year']==y] 
-    brand=Data_Aggregated_User_df.loc[(Data_Aggregated_User_df['Year'] == y) & (Data_Aggregated_User_df['State'] ==s)]
-    myb= brand['Brand_Name'].unique()
-    x = sorted(myb).copy()
-    b=brand.groupby('Brand_Name').sum()
-    b['brand']=x
-    br=b['Registered_Users_Count'].sum()
-    labels = b['brand']
-    values = b['Registered_Users_Count'] # customdata=labels,
-    fig3 = go.Figure(data=[go.Pie(labels=labels, values=values, hole=.4,textinfo='label+percent',texttemplate='%{label}<br>%{percent:1%f}',insidetextorientation='horizontal',textfont=dict(color='#000000'),marker_colors=px.colors.qualitative.Prism)])
+
+    df_filtered = Data_Top_User_Table[(Data_Aggregated_User_df['Year'] == y)]
+    df_filtered3 = df_filtered[(df_filtered['State'] == state)]
+    fig = px.bar(df_filtered3, x='District', y='Registered_Users_Count',
+                 color="District", title=str(y))
+    st.plotly_chart(fig, use_container_width=True)
 
 
-    st.write("#### ",state.upper()+' IN '+Y)
-    st.plotly_chart(fig3, use_container_width=True)
 
-
-    b = b.sort_values(by=['Registered_Users_Count'])
-    fig4= px.bar(b, x='brand', y='Registered_Users_Count',color="Registered_Users_Count",
-                title='In '+state+'in '+str(y),
-                color_continuous_scale="purples",)
-    # with st.expander("See Bar graph for the same data"):
-    st.plotly_chart(fig4,use_container_width=True)
 # ===================================================User OVERALL ANALYSIS ====================================================
     with tab4:
         years=Data_Aggregated_User_Summary_df.groupby('Year')
@@ -422,7 +502,7 @@ with tab3:
         fig1 = px.pie(years_Table, values='Registered_Users', names='year',color_discrete_sequence=px.colors.sequential.RdBu, title='TOTAL REGISTERED USERS (2018 TO 2022)')
         col1, col2= st.columns([0.7,0.3])
         with col1:
-            # st.write('### :green[Drastical Increase in Transactions :rocket:]')
+            #st.write('### :PURPLE[Drastical Increase in Transactions :rocket:]')
             labels = ["US", "China", "European Union", "Russian Federation", "Brazil", "India",
                 "Rest of World"]
 
@@ -444,10 +524,17 @@ with tab3:
             # st.plotly_chart(fig1)
             st.plotly_chart(fig)
         with col2:  
-            st.write('#### :White[Year Wise Transaction Analysis in INDIA]')
+            # st.write('#### :PURPLE[Year Wise Transaction Analysis in INDIA]')
             st.markdown(years_Table.style.hide(axis="index").to_html(), unsafe_allow_html=True)
 
 
+st.write('# :WHITE[User OverAll Count  ]')
+
+fig= px.bar(Data_Top_User_Table, x="State", y="Registered_Users_Count", color="State",
+  animation_frame="Year", animation_group="District", range_y=[0,5000000])
+
+
+st.plotly_chart(fig, use_container_width=True)
 
 st.write('# TOP 3 STATES DATA')
 c1,c2=st.columns(2)
